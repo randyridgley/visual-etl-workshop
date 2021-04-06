@@ -1,0 +1,43 @@
+copyright = "Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved."
+spdx-license-identifier = "CC-BY-SA-4.0"
+
+baseURL = "https://visual-etl.io"
+languageCode = "en-US"
+defaultContentLanguage = "en"
+
+title = "Visual ETL Workshop"
+theme = "learn"
+metaDataFormat = "yaml"
+defaultContentLanguageInSubdir= true
+
+uglyurls = false
+sectionPagesMenu = "main"
+pygmentsCodeFences = true
+pygmentsStyle = "monokai"
+
+enableEmoji = true
+
+[params]
+  description = "Build ETL pipelines without code."
+  author = "Randy Ridgley"
+  disableBreadcrumb = false
+  disableNextPrev = false
+  themeVariant = "aws"
+  disableSearch = false
+  disableAssetsBusting = true
+  disableLanguageSwitchingButton = false
+  disableShortcutsTitle = true
+  disableInlineCopyToClipBoard = true
+
+[outputs]
+  home = [ "HTML", "RSS", "JSON"]
+
+[blackfriday]
+  plainIDAnchors = true
+  hrefTargetBlank = true
+
+[Languages]
+[Languages.en]
+  title = "Visual ETL Workshop"
+  weight = 1
+  languageName = "English"
