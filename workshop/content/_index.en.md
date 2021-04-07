@@ -6,7 +6,7 @@ chapter = false
 weight = 1
 +++
 
-In this workshop you will create ETL pipleines without having to know how to write Python or Scala code for your ETL. See how to create jobs that can be run on schedules or ad hoc and leverage tools in AWS to easily clean, analyze, and transform data in your data lake.
+In this workshop you will create ETL pipleines without having to know how to write Python or Scala code for your ETL. You will load 3rd party data into your data lake, transform it will a job created visually, and create a dashboard to visualize the results. 
 
 The application architecture uses [AWS Data Exchange][data-exchange], [AWS Glue][glue], [Amazon S3][s3], [AWS Glue DataBrew][databrew], [Amazon Quicksight][quicksight], and [AWS Lake Formation][lake-formation].
 

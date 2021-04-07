@@ -4,7 +4,9 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as iam from '@aws-cdk/aws-iam';
 import * as secrets from '@aws-cdk/aws-secretsmanager';
+import * as databrew from '@aws-cdk/aws-databrew';
 import * as path from 'path';
+import { CfnRecipe } from '@aws-cdk/aws-databrew';
 
 interface GlueStudioSnowflakeProps extends cdk.StackProps {
   snowflakeAccount: string
@@ -26,6 +28,15 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'GlueRole', { value: glueRole.roleArn })
 
+    const dataBrewRole = new iam.Role(this, 'DataBrewExecutionRole', {
+      assumedBy: new iam.ServicePrincipal('databrew.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueDataBrewServiceRole")
+      ]
+    });
+
+    new cdk.CfnOutput(this, 'DataBrewRole', { value: dataBrewRole.roleArn })
+
     const snowflakeCreds = new secrets.Secret(this, 'SnowflakeCredentials', {
       secretName: 'snowflakeCreds',
       description: 'Credentials and Warehouse for Snowflake Connection',
@@ -35,6 +46,7 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
 
     const workingBucket = new s3.Bucket(this, 'GlueStudioBucket');
     workingBucket.grantReadWrite(glueRole)
+    workingBucket.grantReadWrite(dataBrewRole)
     new cdk.CfnOutput(this, 'WorkingBucket', { value: workingBucket.bucketName })
 
     new s3deploy.BucketDeployment(this, 'DeployFiles', {
@@ -73,5 +85,36 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
     });
 
     jdbcConnection.node.addDependency(jdbcConnector)
+
+    const databrewRecipe = new databrew.CfnRecipe(this, 'clean-stats-recipe', {
+      name: 'clean-nfl-stats-recipe',
+      steps: [{
+        action: {
+          operation: "CHANGE_DATA_TYPE",
+          parameters: {
+            "columnDataType": "integer",
+            "sourceColumn": "team_id"
+          }
+        }
+      },
+      {
+        action: {
+          operation: "CHANGE_DATA_TYPE",
+          parameters: {
+            "columnDataType": "integer",
+            "sourceColumn": "player_id"
+          }
+        }
+      },
+      {
+        action: {
+          operation: "DELETE",
+          parameters: {
+            "sourceColumns": "[\"blocked_fgs\",\"blocked_kicks\",\"blocked_pat\",\"blocked_punts\",\"def_fums\",\"def_fums_lost\",\"fg_atts\",\"fg_convs\",\"fg_convs_details\",\"fg_long\",\"fg_missed_details\",\"fgs_blocked\",\"kick_ret_atts\",\"kick_ret_long\",\"kick_ret_long_is_td\",\"kick_ret_tds\",\"kick_ret_yds\",\"kick_rets_over_40_yds\",\"kick_rets_over_40_yds_for_td\",\"misc_tkls\",\"net_yds_per_punt\",\"pat_atts\",\"pat_blocked\",\"pat_convs\",\"punt_long\",\"punt_ret_atts\",\"punt_ret_fair_catches\",\"punt_ret_long\",\"punt_ret_long_is_td\",\"punt_ret_tds\",\"punt_rets_over_40_yds\",\"punt_rets_over_40_yds_for_td\",\"punt_return_yds\",\"punt_returns\",\"punt_touch_backs\",\"punt_yds\",\"punts\",\"punts_blocked\",\"punts_in_20\",\"special_teams_fums\",\"special_teams_fums_lost\",\"special_teams_tkl_asts\",\"special_teams_tkls\",\"misc_tkls_asts\"]"
+          }
+        }
+      }],
+      description: 'Recipe to clean stats and remove columns not needed'
+    })
   }
 }
