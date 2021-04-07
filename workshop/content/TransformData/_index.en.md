@@ -7,3 +7,10 @@ weight = 20
 chapter = true
 pre = "<b>2. </b>"
 +++
+
+## Implementation Instructions
+
+:heavy_exclamation_mark: Ensure you've completed the [GetData][get-data] step before beginning
+this section.
+
+[get-data]: /getdata

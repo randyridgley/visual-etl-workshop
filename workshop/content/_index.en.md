@@ -6,7 +6,7 @@ chapter = false
 weight = 1
 +++
 
-In this workshop you will create ETL pipleines without having to know how to write Python or Scala code for your ETL. You will load 3rd party data into your data lake, transform it will a job created visually, and create a dashboard to visualize the results. 
+In this workshop you will learn how to create ETL pipleines without having to have a deep knowledge of Python or Scala. In AWS there are multiple ways to visually build ETL so you were learn about the options that exist allowing you to make the right choice for your development needs. You will learn how to load 3rd party data into your data lake, transform the data, and create a dashboard to visualize the results. The goal of this workshop is to make you aware of the choices available in AWS so you can make an informed decision
 
 The application architecture uses [AWS Data Exchange][data-exchange], [AWS Glue][glue], [Amazon S3][s3], [AWS Glue DataBrew][databrew], [Amazon Quicksight][quicksight], and [AWS Lake Formation][lake-formation].
 

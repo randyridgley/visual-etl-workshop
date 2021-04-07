@@ -6,7 +6,14 @@ date = 2019-09-09T17:42:10+01:00
 weight = 40
 +++
 
-### 4. Export data sets to S3
+### 4. Export data sets to Amazon S3
+
+#### Background
+
+In AWS Data Exchange once you have subscribed to a data set you want to make it available to otehr servcies within your account to be used for your various Analytics and AI/ML workloads. AWS Data Exchange is integrated into services like AWS Glue DataBrew and Amazon S3 to seamlessly load data into those services for further analysis.
+
+#### High-Level Instructions
+
 From the AWS Data Exchange console, you will learn how to export data sets from the `Entitled Data` you recieved when you subscribed to the 3rd party data provided in the exchange. You will run the same directions below for **(2)** data sets in this exercise. You should be in the **Subscriptions** view in the AWS Data Exchange console scrolled down to the **Entitled data sets** section like below:
 
 ![Entitled data sets](/images/data-exchange-entitled-dataset.png)
