@@ -7,7 +7,7 @@ const app = new cdk.App();
 new GlueStudioSnowflakeStack(app, 'GlueStudioSnowflakeStack', {
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
   db: 'SNOWFLAKE_SAMPLE_DATA',
-  schema: 'TPCDS_SF100TCL',
-  snowflakeAccount: '[SNOWFLAKE_ACCOUNT]',
+  schema: 'NFL',
+  snowflakeAccount: app.node.tryGetContext('snowflake_account'),
   jdbcDriver: 'snowflake-jdbc-3.13.2.jar'
 });

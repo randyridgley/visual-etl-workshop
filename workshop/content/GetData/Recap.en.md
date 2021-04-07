@@ -18,8 +18,8 @@ As a subscriber, you can find and subscribe to hundreds of products from qualifi
 
 ### Next
 
-:white_check_mark: Now that you have data, continue on to the next section to [transform the data][transform] in your data lake using AWS Glue Studio.
+:white_check_mark: Now that you have data, continue on to the next section to [manage the data][manage] in your data lake using AWS Lake Formation.
 
 [dx]: https://aws.amazon.com/data-exchange/
 [brew]: https://aws.amazon.com/glue/features/databrew/
-[transform]: /transform
+[manage]: /managedata

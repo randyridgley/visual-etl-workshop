@@ -106,26 +106,14 @@ wget -P lib/assets/ https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/
 
 With your IDE now created and the code for the workshop loaded we will use the [AWS Cloud Development Kit (CDK)][cdk] to initially create resources needed throughout the workshop. For those of you not familiar with the CDK, it is an open source software development framework to define your cloud application resources using familiar programming languages. We will create resources like S3 buckets, IAM Policies and Roles, and Glue DataBrew recipes to save time on building out your Visual ETL pipelines.
 
-Browse to the `resources/code/infra` folder in the terminal and execute the commands below:
-
-Now that you have all the resources needed, you can execute the cdk script to deploy the resources required to create the glue job in Glue Studio for connecting to Snowflake and pulling data from the samples database. The last thing you will need to do is update the `snowflakeAccount` prop in the `bin\glue-studio-snowflake.ts` file below to match your Snowflake account Id. You can also change the `env` section below to match the `AWS_ACCOUNT` and `AWS_REGION` you want to deploy the script to if it is different from the your default setup.
-
-```typescript
-new GlueStudioSnowflakeStack(app, 'GlueStudioSnowflakeStack', {
-  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-  db: 'SNOWFLAKE_SAMPLE_DATA',
-  schema: 'TPCDS_SF100TCL',
-  snowflakeAccount: 'XXXXX',
-  jdbcDriver: 'snowflake-jdbc-3.13.2.jar'
-});
-```
-
-Once that change is ready you can run the command below to synthesize you script to CloudFormation and execute the resources in your account.
+Browse to the `resources/code/infra` folder in the terminal and execute the commands below and replace the `snowflake_account` value to your Snowflake account number:
 
 ```bash
     npm install
-    cdk deploy
+    cdk deploy -c snowflake_account=XXXXXXX
 ```
+
+You will be asked to accept the changes to deploy enter `y` to continue deployment.
 
 When the script is complete you will see outputs of the resources created below. Copy those to a scratch pad to be able to use them later.
 
