@@ -7,7 +7,6 @@ import * as secrets from '@aws-cdk/aws-secretsmanager';
 import * as databrew from '@aws-cdk/aws-databrew';
 import * as lf from '@aws-cdk/aws-lakeformation';
 import * as path from 'path';
-import { Bucket } from '@aws-cdk/aws-s3';
 
 interface GlueStudioSnowflakeProps extends cdk.StackProps {
   snowflakeAccount: string
@@ -50,11 +49,41 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
     workingBucket.grantReadWrite(dataBrewRole)
     new cdk.CfnOutput(this, 'WorkingBucket', { value: workingBucket.bucketName })
 
-    new lf.CfnResource(this, 'WorkingBucketResource', {
+    const bucketResource = new lf.CfnResource(this, 'WorkingBucketResource', {
       resourceArn: workingBucket.bucketArn,
       roleArn: glueRole.roleArn,
       useServiceLinkedRole: false
     })
+
+    const glueRoleDataPermission = new lf.CfnPermissions(this, 'glue-role-data-permission', {
+      dataLakePrincipal: {
+        dataLakePrincipalIdentifier: glueRole.roleArn,
+      },
+      resource: {
+        dataLocationResource: {
+          s3Resource: workingBucket.bucketArn
+        }
+      },
+      permissions: [
+        'DATA_LOCATION_ACCESS'
+      ]
+    });
+    glueRoleDataPermission.node.addDependency(bucketResource)
+
+    const brewRoleDataPermission = new lf.CfnPermissions(this, 'brew-role-data-permission', {
+      dataLakePrincipal: {
+        dataLakePrincipalIdentifier: dataBrewRole.roleArn,
+      },
+      resource: {
+        dataLocationResource: {
+          s3Resource: workingBucket.bucketArn
+        }
+      },
+      permissions: [
+        'DATA_LOCATION_ACCESS'
+      ]
+    });
+    brewRoleDataPermission.node.addDependency(bucketResource)
 
     new s3deploy.BucketDeployment(this, 'DeployFiles', {
       sources: [s3deploy.Source.asset(path.join(__dirname, 'assets'))], 
@@ -93,6 +122,39 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
 
     jdbcConnection.node.addDependency(jdbcConnector)
 
+    const nflDatabase = new glue.Database(this, 'nfl-database', {
+      databaseName: 'nfl'      
+    })
+
+    new lf.CfnPermissions(this, 'glue-role-database-permission', {
+      dataLakePrincipal: {
+        dataLakePrincipalIdentifier: glueRole.roleArn,
+      },
+      resource: {
+        databaseResource: {
+          name: nflDatabase.databaseName
+        }
+      },
+      permissions: [
+        'ALTER',
+        'CREATE_TABLE',
+        'DROP',
+        'DESCRIBE'
+      ]
+    });
+
+    const crawler = new glue.CfnCrawler(this, 'nfl-data-crawler', {
+      role: glueRole.roleName,
+      targets: {
+        s3Targets: [{
+          path: `s3://${workingBucket.bucketName}/football/nfl/`,
+          exclusions: ['boxScoreByPlayer/**']
+        }]
+      },
+      databaseName: nflDatabase.databaseName,
+      description: 'Crawler to populate the nfl database with data from Amazon S3',
+      name: 'nfl-data-crawler'      
+    });
     // const databrewRecipe = new databrew.CfnRecipe(this, 'clean-stats-recipe', {
     //   name: 'clean-nfl-stats-recipe',
     //   steps: [{
