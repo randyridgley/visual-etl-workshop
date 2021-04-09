@@ -10,7 +10,7 @@ pre = "<b>4. </b>"
 
 ## Implementation Instructions
 
-:heavy_exclamation_mark: Ensure you've completed the [ManageData][manage-data] step before beginning
+:heavy_exclamation_mark: Ensure you've completed the [Transform Data][transfrom-data] step before beginning
 this section.
 
-[manage-data]: /managedata
+[transform-data]: /transformdata
