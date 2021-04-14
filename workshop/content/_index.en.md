@@ -23,8 +23,8 @@ architecture and verify your work.
 | Module | Description |
 | ---------------- | -------------------------------------------------------- |
 | [Get Data][get-data] | Use AWS Data Exchange to retrieve 3rd party data set. |
-| [Transform Data][transform-data] | Use AWS Glue and AWS Glue DataBrew to transform the data from multiple csv datasets into a single parquet dataset. **Extra credit to load data from AWS Glue into Snowflake.** |
 | [Manage Data][manage-data] | Use AWS Lake Formation to provide governance and permissioning to datasets in your data lake. |
+| [Transform Data][transform-data] | Use AWS Glue and AWS Glue DataBrew to transform the data from multiple csv datasets into a single parquet dataset. **Extra credit to load data from AWS Glue into Snowflake.** |
 | [Visualize Data][visualize-data] | Use AWS Quicksight to build visualization dashboards. |
 
 :warning: These modules are intended to be executed in order.

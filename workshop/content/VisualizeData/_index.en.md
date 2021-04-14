@@ -4,13 +4,13 @@ spdx-license-identifier = "CC-BY-SA-4.0"
 title = "Visualize Data"
 date = 2019-09-09T17:44:46+01:00
 weight = 40
-chapter = true
+chapter = false
 pre = "<b>4. </b>"
 +++
 
 ## Implementation Instructions
 
-:heavy_exclamation_mark: Ensure you've completed the [Transform Data][transfrom-data] step before beginning
+:heavy_exclamation_mark: Ensure you've completed the [Transform Data][transform-data] step before beginning
 this section.
 
 [transform-data]: /transformdata

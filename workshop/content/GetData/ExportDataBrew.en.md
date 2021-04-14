@@ -46,29 +46,49 @@ In this section you will create a new project in DataBrew and be applying a reci
 
 ![CreateProject](/images/databrew-create-project.png)
 
-2. Now you will need to provide a few details to the project such as name and IAM Role to use to allow DataBrew access to resources like S3 buckets. In the **Name** field use `nfl-stats-project`, check the **Import steps from recipe** and in the drop-down **Choose recipe** select the `nfl-stats-recipe`, this recipe was generated in the CDK script in [Setup][setup]. For the **Recipe version** drop-down select the latest version available.
-
-**Replace this image**
+2. Now you will need to provide a few details to the project such as name and IAM Role to use to allow DataBrew access to resources like S3 buckets. In the **Name** field use `nfl-stats-project`, Leave the default **Create new recipe** in the recipe dropdown as we will be building a new recipe later in this section.
 
 ![ProjectDetails](/images/databrew-project-details.png)
 
-3. To finish creating the project you need to select the appropriate IAM Role for DataBrew to use. Find the IAM Role with the name that matches the CDK script output `DataBrewRole` and select it. Finally, click the **Create project** button.
+1. To finish creating the project you need to select the appropriate IAM Role for DataBrew to use. Find the IAM Role with the name that matches the CDK script output `DataBrewRole` and select it. Finally, click the **Create project** button.
 
 ![ProjectPermissions](/images/databrew-project-permissions.png)
 
 **Replace this image**
 
-4. You will now land in the main view of the project. Here you have many options like profiling the data set, running transforms, creating jobs, and defining schedules for the jobs. To find out more about the capabilities of DataBrew refer to the [Getting Started][getting-started] guide.  
+1. You will now land in the main view of the project. It will take about a minute to providsio the resources needed to start transforming the data. You have many options here to profile the data set, run transforms, creating jobs, and defining schedules for the jobs. There are over 250+ transformations to use out of the box with no prior coding knowledge needed to get up and running fast. To find out more about the capabilities of DataBrew refer to the [Getting Started][getting-started] guide. For the purposes of this module we will be most interested in creating a recipe to remove columns not needed and change the data type of two columns for use later in this workshop. The recipe is a series of actions performed against the data set in the project and the recipe can be saved and reused as new data sets with the same structure are imported into your data lake.
 
 ![ProjectView](/images/databrew-project-view.png)
 
-1. For this exercise we will be using a pre-created recipe to clean and transform the data. Take a minute and review the **Recipe** section to see how you can add transforms to recipes or even bring in other data sets to be joined visually. A great example blog showing the transformation capabilities in DataBrew can be found [here][transforms].
+1. For this exercise we will be creating a new recipe to clean and transform the data. On the right hand side of the console you will see a **Recipe** section go and click the `Add Step` button to add the steps below to cerate the recipe. A great example blog showing the transformation capabilities in DataBrew can be found [here][transforms].
 
-**Replace this image**
+![ProjectRecipe](/images/databrew-start-recipe.png)
 
-![ProjectRecipe](/images/databrew-project-recipe.png)
+After you add the first step you can use the toolbar in the **Recipe** section to add additional steps. Find the icon with the plus side on the far right to add the additional steps below after the first one.
 
-6. Now that we have viewed the data set in DataBrew and have a recipe to remove columns and change a few data types we are ready to create a job to transform the data set and load into Amazon S3. Click the **Create Job** button in the toolbar on the right side of the page to continue. 
+![ProjectRecipeSteps](/images/databrew-recipe-add-step.png)
+
+Recipe Steps:
+
+1. Find **COLUMN ACTIONS** and select `Change Type`
+    * Set **Source Column** to `player_id` and **Change type to** to `integer`
+2. Find **COLUMN ACTIONS** and select `Change Type`
+    * Set **Source Column** to `team_id` and **Change type to** to `integer`
+3. Find **COLUMN ACTIONS** and select `Delete`
+    * Select all the fields that begin with:
+    * `blocked_`, `fg_`, `fgs_`, `kick_`, `punt_`, `special_teams_` 
+    * The list should look like below when complete:
+    * `blocked_fgs`,`blocked_kicks`,`blocked_pat`,`blocked_punts`,`fg_atts`,`fg_convs`,`fg_convs_details`,`fg_long`,`fg_missed_details`,`fgs_blocked`,`kick_ret_atts`,`kick_ret_long`,`kick_ret_long_is_td`,`kick_ret_tds`,`kick_ret_yds`,`kick_rets_over_40_yds`,`kick_rets_over_40_yds_for_td`,`punt_long`,`punt_ret_atts`,`punt_ret_fair_catches`,`punt_ret_long`,`punt_ret_long_is_td`,`punt_ret_tds`,`punt_rets_over_40_yds`,`punt_rets_over_40_yds_for_td`,`punt_return_yds`,`punt_returns`,`punt_touch_backs`,`punt_yds`,`punts`,`punts_blocked`,`punts_in_20`,`special_teams_fums`,`special_teams_fums_lost`,`special_teams_tkl_asts`,`special_teams_tkls`
+
+Once you have added all your steps you should have a recipe that looks like below:
+
+![ProjectRecipeComplete](/images/databrew-recipe-complete.png)
+
+1. We now want to publish this recipe so we can use it in the job in the next step below to clean the data. Find the recipe **Publish** icon and click it. You should be presented wth the window below. For the **Version description** put in `Version 1` and click the **Publish** button to complete.
+
+![ProjectRecipePublish](/images/databrew-recipe-publish.png)
+
+1. Now that we have viewed the data set in DataBrew and have a recipe to remove columns and change a few data types we are ready to create a job to transform the data set and load into Amazon S3. Click the **Create Job** button in the toolbar on the right side of the page to continue.
 
 ![CreateJob](/images/databrew-create-job.png)
 
