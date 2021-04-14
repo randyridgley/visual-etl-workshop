@@ -1,7 +1,7 @@
 +++
 copyright = "Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved."
 spdx-license-identifier = "CC-BY-SA-4.0"
-title = "Visual ETL Pipelines"
+title = "Visual ETL Workshop"
 chapter = false
 weight = 1
 +++
