@@ -68,6 +68,8 @@ After you add the first step you can use the toolbar in the **Recipe** section t
 
 ![ProjectRecipeSteps](/images/databrew-recipe-add-step.png)
 
+**Todo** consider adding more steps to recipe to add 0 for empty values
+
 Recipe Steps:
 
 1. Find **COLUMN ACTIONS** and select `Change Type`
@@ -92,7 +94,7 @@ Once you have added all your steps you should have a recipe that looks like belo
 
 ![CreateJob](/images/databrew-create-job.png)
 
-7. A few key details are needed to create the job. Put `nfl-stats-clean` as the name in the **Job name** textbox, verify you have the correct data set in DataBrew and for **Job Output Settings** select `CSV` for **File Type**,  find the bucket created in the CDK output param `WorkingBucket` and add the prefix `football/nfl/cleaned-stats/` in the **S3 Location** leaving the defaults for the other options.
+1. A few key details are needed to create the job. Put `nfl-stats-clean` as the name in the **Job name** textbox, verify you have the correct data set in DataBrew and for **Job Output Settings** select `CSV` for **File Type**,  find the bucket created in the CDK output param `WorkingBucket` and add the prefix `football/nfl/stats/` in the **S3 Location** leaving the defaults for the other options.
 
 ![JobDetails](/images/databrew-job-details.png)
 
