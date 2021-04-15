@@ -125,15 +125,26 @@ Now that you have the S3 target setup you can jump down to the Job Details secti
 
 #### Snowflake
 
+For Snowflake, we need to do one more transformation before sending the data set to Snowflake. All Columns in the data set need to be upper case in order for the insert to succeed. So we need to create one more **Apply Mapping** transform to make all columns uppercase.
+
+From the **Transform** dropdown select the `Apply Mapping` transform.
+
+* On the **Node Properties** tab select the following:
+  * **Name** type `ToUpperCase`
+  * **Node parents** select the `FilterQuarterbacks` node.
+* On the **Transform** tab each column needs to be upper case for example, `pass_yds` would be converted to `PASS_YDS`. Each column needs to be modified in the **Target Key** textbox and the **Data Type** can be left alone.
+
+Now that we have set the columns appropriately we can create the target to Snowflake.
+
 From the **Target** dropdown select the `snowflake-jdbc-glue-connector` target.
 
 * On the **Node Properties** tab select the following:
   * **Name** type `QuarterbackStatsSnowflake`
   * **Node type** if not selected select `snowflake-jdbc-glue-connector`
-  * **Node parents** select the `FilterQuarterbacks` node.
+  * **Node parents** select the `ToUpperCase` node.
 * On the **Data target properties** tab we are to perist to Snowflake.
   * **Connection** select the connection you created earlier named `snowflake-jdbc-glue-connection`.
-  * **Table** type `quarterback_stats` in the textbox.
+  * **Table** type `QUARTERBACK_STATS` in the textbox.
 
 ![Snowflake](/images/glue-snowflake-target.png)
 
@@ -230,7 +241,7 @@ Transform2 = Filter.apply(frame = Transform5, f = lambda row : (row["p_positioni
 ## @args: [connection_type = "custom.jdbc", connection_options = {"dbTable":"quarterback_stats","connectionName":"snowflake-jdbc-glue-connection"}, transformation_ctx = "DataSink0"]
 ## @return: DataSink0
 ## @inputs: [frame = Transform2]
-DataSink0 = glueContext.write_dynamic_frame.from_options(frame = Transform2, connection_type = "custom.jdbc", connection_options = {"dbTable":"quarterback_stats","connectionName":"snowflake-jdbc-glue-connection"}, transformation_ctx = "DataSink0")
+DataSink0 = glueContext.write_dynamic_frame.from_options(frame = Transform2, connection_type = "custom.jdbc", connection_options = {"dbTable":"QUARTERBACK_STATS","connectionName":"snowflake-jdbc-glue-connection"}, transformation_ctx = "DataSink0")
 job.commit()
 
 ```

@@ -27,7 +27,7 @@ Starting where we left off in the last section, we want to see if our current us
 
 ![AthenaError](/images/athena-lf-error.png)
 
-3. Let's work on fixing this for the `players` table first and then we can apply the same concepts to the `teams` and `stats` tables to make them available to be queried. With the radio button on the `players` row selected drop down the **Action** dropdown button again, but this time under the **Permissions** section click `Grant`. This will bring up the dialog to grant access to the table for your user like below. For the **IAM Users and Roles** dropdown select the role `FILLINTHEBLANK`, and in the **Table Permissions** section check the `Select` and `Describe` checkboxes to give read access to the table.
+3. Let's work on fixing this for the `players` table first and then we can apply the same concepts to the `teams` and `stats` tables to make them available to be queried. With the radio button on the `players` row selected drop down the **Action** dropdown button again, but this time under the **Permissions** section click `Grant`. This will bring up the dialog to grant access to the table for your user like below. For the **IAM Users and Roles** dropdown select the role `FILLINTHEBLANK` and the `GlueExecutionRole` from the CDK script, and in the **Table Permissions** section check the `Select` and `Describe` checkboxes to give read access to the table.
 
 ![GrantComplete](/images/lf-grant-complete.png)
 

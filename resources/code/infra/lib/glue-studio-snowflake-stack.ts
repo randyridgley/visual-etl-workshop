@@ -25,8 +25,35 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
       ),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueServiceRole")
+      ],
+      inlinePolicies: {
+        LakeFormationPermissionPolicy: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: [
+                "lakeformation:GetDataAccess",
+                "lakeformation:GrantPermissions"
+              ],
+              resources: [
+                "*"
+              ]
+            })
+          ]
+      })}
+    });
+
+    const passGlueRolePolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'iam:PassRole'
+      ],
+      resources: [
+        glueRole.roleArn
       ]
     });
+
+    glueRole.addToPolicy(passGlueRolePolicy);
 
     new cdk.CfnOutput(this, 'GlueRole', { value: glueRole.roleArn })
 
@@ -102,7 +129,7 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
         "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
         "CONNECTOR_TYPE": "Jdbc",
         "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
-        "JDBC_CONNECTION_URL": "[[\"default=jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}\"],\"&\"]"
+        "JDBC_CONNECTION_URL": "[[\"default=jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}\"],\"&\"]"
       }
     });
 
