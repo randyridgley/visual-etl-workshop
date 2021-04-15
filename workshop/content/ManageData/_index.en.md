@@ -32,7 +32,9 @@ You can use a crawler to populate the AWS Glue Data Catalog with tables. This is
 AWS Glue runs your ETL jobs in an Apache Spark serverless environment. AWS Glue runs these jobs on virtual resources that it provisions and manages in its own service account.
 
 ### What is AWS Lake Formation
+
 AWS Lake Formation makes it easier for you to build, secure, and manage data lakes. Lake Formation helps you do the following, either directly or through other AWS services:
+
 * Create a registry of data locations and paths where your data lake will reside.
 * Orchestrate data flows that ingest, cleanse, transform, and organize the raw data.
 * Create and manage a Data Catalog containing metadata about data sources and data in the data lake.

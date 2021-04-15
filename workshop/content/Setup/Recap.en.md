@@ -21,4 +21,4 @@ wherein you'll browse and subscribe to data from AWS Data Exchange .
 
 [aws-cloud9-ide]: ../accountsetup/#starting-aws-cloud9-ide
 [event-engine]: ../eventengine
-[get-data]: /getdata
+[get-data]: ../getdata
