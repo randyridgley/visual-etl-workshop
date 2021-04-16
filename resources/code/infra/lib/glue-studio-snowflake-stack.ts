@@ -144,7 +144,7 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
         "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
         "CONNECTOR_TYPE": "Jdbc",
         "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
-        "JDBC_CONNECTION_URL": "jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}&db=" + props.db + "&schema=" + props.schema,
+        "JDBC_CONNECTION_URL": "jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}&db=" + props.db + "&schema=" + props.schema,
         "SECRET_ID": snowflakeCreds.secretName
       }
     });
