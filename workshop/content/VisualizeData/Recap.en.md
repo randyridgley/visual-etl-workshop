@@ -10,7 +10,7 @@ weight = 99
 
 :key: [AWS QuickSight][quicksight] is a scalable, serverless, embeddable, machine learning-powered business intelligence (BI) service built for the cloud. QuickSight lets you easily create and publish interactive BI dashboards that include Machine Learning-powered insights. QuickSight dashboards can be accessed from any device, and seamlessly embedded into your applications, portals, and websites.
 
-:wrench: In this module you've used AWS Glue Studio to clean, transform, and export data into your dtaa lake either in S3 or Snowflake. Learned how to use Athena to verify results of data in your S3 data lake. Finally, reinforced adding permission to data in your data lake through AWS Lake Formation.
+:wrench: In this module you've used QuickSight to connect to data in your data lake usig the Glue Data Catalog and Athena to query as well as optionally connect to Snowflake and pull data in from there.
 
 ### Next
 

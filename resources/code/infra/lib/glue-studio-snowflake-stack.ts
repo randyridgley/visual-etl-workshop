@@ -8,7 +8,7 @@ import * as lf from '@aws-cdk/aws-lakeformation';
 import * as path from 'path';
 
 interface GlueStudioSnowflakeProps extends cdk.StackProps {
-  snowflakeAccount: string
+  snowflakeAccount?: string
   db: string
   schema: string
   jdbcDriver: string
@@ -119,37 +119,37 @@ export class GlueStudioSnowflakeStack extends cdk.Stack {
       destinationBucket: workingBucket,
     });
 
-    const jdbcConnector = new glue.Connection(this, 'snowflake-jdbc-connector', {
-      type: new glue.ConnectionType('CUSTOM'),
-      connectionName: 'snowflake-jdbc-glue-connector',
-      matchCriteria: [
-        "template-connection"
-      ],
-      properties: {
-        "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
-        "CONNECTOR_TYPE": "Jdbc",
-        "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
-        "JDBC_CONNECTION_URL": "[[\"default=jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}\"],\"&\"]"
-      }
-    });
+    // const jdbcConnector = new glue.Connection(this, 'snowflake-jdbc-connector', {
+    //   type: new glue.ConnectionType('CUSTOM'),
+    //   connectionName: 'snowflake-jdbc-glue-connector',
+    //   matchCriteria: [
+    //     "template-connection"
+    //   ],
+    //   properties: {
+    //     "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
+    //     "CONNECTOR_TYPE": "Jdbc",
+    //     "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
+    //     "JDBC_CONNECTION_URL": "[[\"default=jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}\"],\"&\"]"
+    //   }
+    // });
 
-    const jdbcConnection = new glue.Connection(this, 'snowflake-jdbc-connection', {
-      type: new glue.ConnectionType('CUSTOM'),
-      connectionName: 'snowflake-jdbc-glue-connection',
-      matchCriteria: [
-        "Connection",
-        "snowflake-jdbc-glue-connector"
-      ],
-      properties: {
-        "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
-        "CONNECTOR_TYPE": "Jdbc",
-        "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
-        "JDBC_CONNECTION_URL": "jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}&db=" + props.db + "&schema=" + props.schema,
-        "SECRET_ID": snowflakeCreds.secretName
-      }
-    });
+    // const jdbcConnection = new glue.Connection(this, 'snowflake-jdbc-connection', {
+    //   type: new glue.ConnectionType('CUSTOM'),
+    //   connectionName: 'snowflake-jdbc-glue-connection',
+    //   matchCriteria: [
+    //     "Connection",
+    //     "snowflake-jdbc-glue-connector"
+    //   ],
+    //   properties: {
+    //     "CONNECTOR_CLASS_NAME": "net.snowflake.client.jdbc.SnowflakeDriver",
+    //     "CONNECTOR_TYPE": "Jdbc",
+    //     "CONNECTOR_URL": "s3://" + workingBucket.bucketName + "/" + props.jdbcDriver,
+    //     "JDBC_CONNECTION_URL": "jdbc:snowflake://" + props.snowflakeAccount + "." + cdk.Aws.REGION + ".aws.snowflakecomputing.com/?user=${Username}&password=${Password}&warehouse=${warehouse}&db=" + props.db + "&schema=" + props.schema,
+    //     "SECRET_ID": snowflakeCreds.secretName
+    //   }
+    // });
 
-    jdbcConnection.node.addDependency(jdbcConnector)
+    // jdbcConnection.node.addDependency(jdbcConnector)
 
     const nflDatabase = new glue.Database(this, 'nfl-database', {
       databaseName: 'nfl'      
